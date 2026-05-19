@@ -5,10 +5,10 @@ import { Menu, X, Globe } from "lucide-react";
 
 const links = [
   { label: "Home", to: "/" },
-  { label: "Properties", to: "/" },
+  { label: "Properties", to: "/properties" },
   { label: "About", to: "/" },
   { label: "Contact", to: "/" },
-];
+] as const;
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
