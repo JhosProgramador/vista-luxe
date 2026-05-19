@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "@tanstack/react-router";
 import { Bed, Bath, Maximize, MapPin, Plus, LayoutGrid, List } from "lucide-react";
 import p1 from "@/assets/property-1.jpg";
 import p2 from "@/assets/property-2.jpg";
@@ -134,9 +135,13 @@ function Card({ property: p, layout }: { property: Property; layout: "grid" | "l
       </div>
 
       <div className="flex flex-1 flex-col p-5">
-        <h3 className="font-display text-lg font-semibold text-foreground">
+        <Link
+          to="/properties/$id"
+          params={{ id: p.id }}
+          className="font-display text-lg font-semibold text-foreground transition-colors hover:text-primary"
+        >
           {p.title}
-        </h3>
+        </Link>
         <div className="mt-1 flex items-center gap-1.5 text-xs text-muted-foreground">
           <MapPin className="h-3.5 w-3.5 text-primary" />
           {p.location}
