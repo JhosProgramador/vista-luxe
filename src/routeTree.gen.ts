@@ -11,9 +11,17 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as PropertiesRouteImport } from './routes/properties'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as PropertiesIdRouteImport } from './routes/properties.$id'
+import { Route as AdminUsersRouteImport } from './routes/admin.users'
+import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
+import { Route as AdminPropertiesRouteImport } from './routes/admin.properties'
+import { Route as AdminPremiumRouteImport } from './routes/admin.premium'
+import { Route as AdminMessagesRouteImport } from './routes/admin.messages'
+import { Route as AdminLeadsRouteImport } from './routes/admin.leads'
 
 const PropertiesRoute = PropertiesRouteImport.update({
   id: '/properties',
@@ -23,6 +31,11 @@ const PropertiesRoute = PropertiesRouteImport.update({
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -35,51 +48,143 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
 const PropertiesIdRoute = PropertiesIdRouteImport.update({
   id: '/$id',
   path: '/$id',
   getParentRoute: () => PropertiesRoute,
 } as any)
+const AdminUsersRoute = AdminUsersRouteImport.update({
+  id: '/users',
+  path: '/users',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminSettingsRoute = AdminSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminPropertiesRoute = AdminPropertiesRouteImport.update({
+  id: '/properties',
+  path: '/properties',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminPremiumRoute = AdminPremiumRouteImport.update({
+  id: '/premium',
+  path: '/premium',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminMessagesRoute = AdminMessagesRouteImport.update({
+  id: '/messages',
+  path: '/messages',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminLeadsRoute = AdminLeadsRouteImport.update({
+  id: '/leads',
+  path: '/leads',
+  getParentRoute: () => AdminRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/admin': typeof AdminRouteWithChildren
   '/contact': typeof ContactRoute
   '/properties': typeof PropertiesRouteWithChildren
+  '/admin/leads': typeof AdminLeadsRoute
+  '/admin/messages': typeof AdminMessagesRoute
+  '/admin/premium': typeof AdminPremiumRoute
+  '/admin/properties': typeof AdminPropertiesRoute
+  '/admin/settings': typeof AdminSettingsRoute
+  '/admin/users': typeof AdminUsersRoute
   '/properties/$id': typeof PropertiesIdRoute
+  '/admin/': typeof AdminIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/properties': typeof PropertiesRouteWithChildren
+  '/admin/leads': typeof AdminLeadsRoute
+  '/admin/messages': typeof AdminMessagesRoute
+  '/admin/premium': typeof AdminPremiumRoute
+  '/admin/properties': typeof AdminPropertiesRoute
+  '/admin/settings': typeof AdminSettingsRoute
+  '/admin/users': typeof AdminUsersRoute
   '/properties/$id': typeof PropertiesIdRoute
+  '/admin': typeof AdminIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/admin': typeof AdminRouteWithChildren
   '/contact': typeof ContactRoute
   '/properties': typeof PropertiesRouteWithChildren
+  '/admin/leads': typeof AdminLeadsRoute
+  '/admin/messages': typeof AdminMessagesRoute
+  '/admin/premium': typeof AdminPremiumRoute
+  '/admin/properties': typeof AdminPropertiesRoute
+  '/admin/settings': typeof AdminSettingsRoute
+  '/admin/users': typeof AdminUsersRoute
   '/properties/$id': typeof PropertiesIdRoute
+  '/admin/': typeof AdminIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/contact' | '/properties' | '/properties/$id'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/admin'
+    | '/contact'
+    | '/properties'
+    | '/admin/leads'
+    | '/admin/messages'
+    | '/admin/premium'
+    | '/admin/properties'
+    | '/admin/settings'
+    | '/admin/users'
+    | '/properties/$id'
+    | '/admin/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/contact' | '/properties' | '/properties/$id'
-  id:
-    | '__root__'
+  to:
     | '/'
     | '/about'
     | '/contact'
     | '/properties'
+    | '/admin/leads'
+    | '/admin/messages'
+    | '/admin/premium'
+    | '/admin/properties'
+    | '/admin/settings'
+    | '/admin/users'
     | '/properties/$id'
+    | '/admin'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/admin'
+    | '/contact'
+    | '/properties'
+    | '/admin/leads'
+    | '/admin/messages'
+    | '/admin/premium'
+    | '/admin/properties'
+    | '/admin/settings'
+    | '/admin/users'
+    | '/properties/$id'
+    | '/admin/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  AdminRoute: typeof AdminRouteWithChildren
   ContactRoute: typeof ContactRoute
   PropertiesRoute: typeof PropertiesRouteWithChildren
 }
@@ -100,6 +205,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/about': {
       id: '/about'
       path: '/about'
@@ -114,6 +226,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/properties/$id': {
       id: '/properties/$id'
       path: '/$id'
@@ -121,8 +240,72 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PropertiesIdRouteImport
       parentRoute: typeof PropertiesRoute
     }
+    '/admin/users': {
+      id: '/admin/users'
+      path: '/users'
+      fullPath: '/admin/users'
+      preLoaderRoute: typeof AdminUsersRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/settings': {
+      id: '/admin/settings'
+      path: '/settings'
+      fullPath: '/admin/settings'
+      preLoaderRoute: typeof AdminSettingsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/properties': {
+      id: '/admin/properties'
+      path: '/properties'
+      fullPath: '/admin/properties'
+      preLoaderRoute: typeof AdminPropertiesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/premium': {
+      id: '/admin/premium'
+      path: '/premium'
+      fullPath: '/admin/premium'
+      preLoaderRoute: typeof AdminPremiumRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/messages': {
+      id: '/admin/messages'
+      path: '/messages'
+      fullPath: '/admin/messages'
+      preLoaderRoute: typeof AdminMessagesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/leads': {
+      id: '/admin/leads'
+      path: '/leads'
+      fullPath: '/admin/leads'
+      preLoaderRoute: typeof AdminLeadsRouteImport
+      parentRoute: typeof AdminRoute
+    }
   }
 }
+
+interface AdminRouteChildren {
+  AdminLeadsRoute: typeof AdminLeadsRoute
+  AdminMessagesRoute: typeof AdminMessagesRoute
+  AdminPremiumRoute: typeof AdminPremiumRoute
+  AdminPropertiesRoute: typeof AdminPropertiesRoute
+  AdminSettingsRoute: typeof AdminSettingsRoute
+  AdminUsersRoute: typeof AdminUsersRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminLeadsRoute: AdminLeadsRoute,
+  AdminMessagesRoute: AdminMessagesRoute,
+  AdminPremiumRoute: AdminPremiumRoute,
+  AdminPropertiesRoute: AdminPropertiesRoute,
+  AdminSettingsRoute: AdminSettingsRoute,
+  AdminUsersRoute: AdminUsersRoute,
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 interface PropertiesRouteChildren {
   PropertiesIdRoute: typeof PropertiesIdRoute
@@ -139,9 +322,20 @@ const PropertiesRouteWithChildren = PropertiesRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  AdminRoute: AdminRouteWithChildren,
   ContactRoute: ContactRoute,
   PropertiesRoute: PropertiesRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
