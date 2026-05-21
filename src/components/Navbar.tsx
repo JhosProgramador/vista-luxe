@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Logo } from "./Logo";
 import { Menu, X, Globe } from "lucide-react";
+import { ThemeToggle } from "./ThemeToggle";
 
 const links = [
   { label: "Home", to: "/" },
   { label: "Properties", to: "/properties" },
   { label: "About", to: "/about" },
   { label: "Contact", to: "/contact" },
+  { label: "Admin", to: "/admin" },
 ] as const;
 
 export function Navbar() {
@@ -46,7 +48,8 @@ export function Navbar() {
           ))}
         </ul>
 
-        <div className="hidden items-center gap-4 md:flex">
+        <div className="hidden items-center gap-3 md:flex">
+          <ThemeToggle />
           <button
             onClick={() => setLang(lang === "ES" ? "EN" : "ES")}
             className="flex items-center gap-2 rounded-full border border-border px-3 py-1.5 text-xs tracking-widest text-muted-foreground transition-colors hover:border-primary hover:text-primary"
