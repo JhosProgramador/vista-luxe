@@ -168,6 +168,19 @@ html.light {
     -webkit-backdrop-filter: blur(24px) saturate(160%);
     border: 1px solid var(--glass-border);
   }
+  .light .glass-strong {
+    background: oklch(1 0 0 / 0.78);
+    border-color: oklch(0.18 0.012 250 / 0.14);
+  }
+  /* Always-dark glass for elements that sit on top of the cinematic hero image,
+     regardless of theme. */
+  .glass-hero {
+    background: oklch(0.12 0.012 250 / 0.45);
+    backdrop-filter: blur(22px) saturate(160%);
+    -webkit-backdrop-filter: blur(22px) saturate(160%);
+    border: 1px solid oklch(1 0 0 / 0.14);
+  }
+
   .text-gradient-gold {
     background: var(--gradient-gold);
     -webkit-background-clip: text;
