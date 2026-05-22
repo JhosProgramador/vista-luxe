@@ -24,6 +24,16 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // When NOT scrolled, the navbar sits on top of the dark hero image
+  // → always render light text. When scrolled → use themed glass.
+  const linkBase = scrolled
+    ? "nav-link text-sm tracking-wide text-foreground/80 transition-colors hover:text-primary"
+    : "nav-link text-sm tracking-wide text-white/85 transition-colors hover:text-white";
+
+  const iconBtn = scrolled
+    ? "flex h-9 items-center gap-2 rounded-full border border-border px-3 py-1.5 text-xs tracking-widest text-foreground/80 transition-colors hover:border-primary hover:text-primary"
+    : "flex h-9 items-center gap-2 rounded-full border border-white/25 px-3 py-1.5 text-xs tracking-widest text-white/85 transition-colors hover:border-white hover:text-white";
+
   return (
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-smooth ${
@@ -38,10 +48,7 @@ export function Navbar() {
         <ul className="hidden items-center gap-10 md:flex">
           {links.map((l) => (
             <li key={l.label}>
-              <Link
-                to={l.to}
-                className="text-sm tracking-wide text-muted-foreground transition-colors hover:text-primary"
-              >
+              <Link to={l.to} className={linkBase}>
                 {l.label}
               </Link>
             </li>
@@ -49,21 +56,27 @@ export function Navbar() {
         </ul>
 
         <div className="hidden items-center gap-3 md:flex">
-          <ThemeToggle />
+          <ThemeToggle
+            className={
+              scrolled
+                ? ""
+                : "border-white/25 text-white/85 hover:border-white hover:text-white"
+            }
+          />
           <button
             onClick={() => setLang(lang === "ES" ? "EN" : "ES")}
-            className="flex items-center gap-2 rounded-full border border-border px-3 py-1.5 text-xs tracking-widest text-muted-foreground transition-colors hover:border-primary hover:text-primary"
+            className={iconBtn}
           >
             <Globe className="h-3.5 w-3.5" />
             {lang}
           </button>
-          <button className="rounded-full bg-gradient-gold px-5 py-2 text-xs font-medium tracking-widest text-primary-foreground shadow-glow transition-smooth hover:scale-[1.03]">
+          <button className="rounded-full bg-gradient-gold px-5 py-2 text-xs font-medium tracking-widest text-primary-foreground shadow-glow transition-smooth hover:scale-[1.04] hover:shadow-glow">
             CONTACT
           </button>
         </div>
 
         <button
-          className="md:hidden text-foreground"
+          className={`md:hidden ${scrolled ? "text-foreground" : "text-white"}`}
           onClick={() => setOpen(!open)}
           aria-label="Menu"
         >
@@ -79,7 +92,7 @@ export function Navbar() {
                 <Link
                   to={l.to}
                   onClick={() => setOpen(false)}
-                  className="block py-2 text-sm text-muted-foreground hover:text-primary"
+                  className="block py-2 text-sm text-foreground/80 hover:text-primary"
                 >
                   {l.label}
                 </Link>
