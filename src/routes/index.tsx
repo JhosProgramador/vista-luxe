@@ -6,6 +6,8 @@ import { PremiumBanner } from "@/components/PremiumBanner";
 import { CtaSection } from "@/components/CtaSection";
 import { Footer } from "@/components/Footer";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
+import { useReveal } from "@/hooks/useReveal";
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -28,17 +30,25 @@ export const Route = createFileRoute("/")({
 });
 
 function Home() {
+  useReveal();
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
       <main>
         <Hero />
-        <FeaturedProperties />
-        <PremiumBanner />
-        <CtaSection />
+        <div className="reveal">
+          <FeaturedProperties />
+        </div>
+        <div className="reveal">
+          <PremiumBanner />
+        </div>
+        <div className="reveal">
+          <CtaSection />
+        </div>
       </main>
       <Footer />
       <WhatsAppButton />
     </div>
   );
 }
+

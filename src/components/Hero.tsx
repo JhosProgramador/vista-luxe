@@ -11,31 +11,50 @@ export function Hero() {
         height={1280}
         className="absolute inset-0 h-full w-full object-cover"
       />
+      {/* Always-dark cinematic overlay (independent of theme) */}
       <div
         className="absolute inset-0"
-        style={{ background: "var(--gradient-hero)" }}
+        style={{
+          background:
+            "linear-gradient(180deg, oklch(0.12 0.012 250 / 0.35) 0%, oklch(0.12 0.012 250 / 0.78) 70%, var(--background) 100%)",
+        }}
       />
 
       <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl flex-col justify-center px-6 pt-32 pb-20">
         <div className="max-w-3xl">
-          <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-background/30 px-4 py-1.5 text-[11px] uppercase tracking-[0.3em] text-primary backdrop-blur">
-            <span className="h-1 w-1 rounded-full bg-primary" /> Private Real Estate · Colombia
+          <span className="reveal mb-6 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-1.5 text-[11px] uppercase tracking-[0.3em] text-gold-soft backdrop-blur">
+            <span className="h-1 w-1 rounded-full bg-gold-soft" /> Private Real Estate · Colombia
           </span>
 
-          <h1 className="font-display text-5xl font-bold leading-[1.05] tracking-tight text-foreground md:text-7xl lg:text-[5.5rem]">
-            Discover <span className="text-gradient-gold">premium</span><br />
+          <h1 className="reveal reveal-delay-1 font-display text-5xl font-bold leading-[1.05] tracking-tight text-white md:text-7xl lg:text-[5.5rem]"
+              style={{ textShadow: "0 2px 30px oklch(0 0 0 / 0.4)" }}>
+            Discover{" "}
+            <span
+              className="text-gradient-gold"
+              style={{
+                backgroundImage:
+                  "linear-gradient(135deg, #FFFFFF 0%, #F5E6B8 35%, #D4AF6A 70%, #B8893E 100%)",
+                WebkitBackgroundClip: "text",
+                backgroundClip: "text",
+                color: "transparent",
+                filter: "drop-shadow(0 2px 18px oklch(0.78 0.12 80 / 0.45))",
+              }}
+            >
+              premium
+            </span>
+            <br />
             properties in Colombia
           </h1>
 
-          <p className="mt-6 max-w-xl text-base text-muted-foreground md:text-lg">
+          <p className="reveal reveal-delay-2 mt-6 max-w-xl text-base text-white/85 md:text-lg">
             A curated portfolio of luxury homes, beachfront villas and elite
             residences — handpicked for discerning buyers and international
             investors.
           </p>
         </div>
 
-        {/* Glass search */}
-        <div className="glass-strong mt-12 max-w-5xl rounded-2xl p-3 shadow-luxury">
+        {/* Glass search — always-dark glass for contrast over the hero image */}
+        <div className="glass-hero reveal reveal-delay-3 mt-12 max-w-5xl rounded-2xl p-3 shadow-luxury">
           <div className="grid grid-cols-1 gap-2 md:grid-cols-[1.2fr_1fr_1fr_auto]">
             <SearchField icon={<MapPin className="h-4 w-4" />} label="Location" placeholder="Cartagena, Medellín..." />
             <SearchField icon={<Home className="h-4 w-4" />} label="Property type" placeholder="Villa, Penthouse..." />
@@ -48,7 +67,7 @@ export function Hero() {
         </div>
 
         {/* Stats */}
-        <div className="mt-16 grid max-w-3xl grid-cols-3 gap-8 border-t border-border pt-8">
+        <div className="reveal reveal-delay-4 mt-16 grid max-w-3xl grid-cols-3 gap-8 border-t border-white/15 pt-8">
           <Stat value="240+" label="Curated listings" />
           <Stat value="18" label="Years of expertise" />
           <Stat value="$1.2B" label="In transactions" />
@@ -68,15 +87,15 @@ function SearchField({
   placeholder: string;
 }) {
   return (
-    <div className="group rounded-xl border border-transparent bg-background/20 px-4 py-3 transition-smooth hover:border-primary/40">
-      <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.25em] text-primary/80">
+    <div className="group rounded-xl border border-white/15 bg-white/[0.06] px-4 py-3 transition-smooth hover:border-gold-soft/60 hover:bg-white/[0.1]">
+      <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.25em] text-gold-soft">
         {icon}
         {label}
       </div>
       <input
         type="text"
         placeholder={placeholder}
-        className="mt-1 w-full bg-transparent text-sm text-foreground placeholder:text-muted-foreground/60 focus:outline-none"
+        className="mt-1 w-full bg-transparent text-sm text-white placeholder:text-white/45 focus:outline-none"
       />
     </div>
   );
@@ -85,10 +104,10 @@ function SearchField({
 function Stat({ value, label }: { value: string; label: string }) {
   return (
     <div>
-      <div className="font-display text-3xl font-semibold text-foreground md:text-4xl">
+      <div className="font-display text-3xl font-semibold text-white md:text-4xl">
         {value}
       </div>
-      <div className="mt-1 text-xs uppercase tracking-[0.2em] text-muted-foreground">
+      <div className="mt-1 text-xs uppercase tracking-[0.2em] text-white/70">
         {label}
       </div>
     </div>
