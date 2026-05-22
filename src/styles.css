@@ -78,34 +78,52 @@
 }
 
 .light {
-  --background: oklch(0.99 0.003 90);
-  --foreground: oklch(0.18 0.012 250);
+  /* High-contrast luxury light palette (WCAG AA+) */
+  --background: oklch(0.985 0.004 90);
+  --foreground: oklch(0.16 0.012 250);          /* near-black body text */
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.2 0.012 250);
+  --card-foreground: oklch(0.16 0.012 250);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.2 0.012 250);
-  --primary: oklch(0.62 0.1 75);
+  --popover-foreground: oklch(0.16 0.012 250);
+  --primary: oklch(0.42 0.08 70);               /* darker gold for AA on white */
   --primary-foreground: oklch(0.99 0 0);
-  --secondary: oklch(0.96 0.005 90);
-  --secondary-foreground: oklch(0.2 0.012 250);
-  --muted: oklch(0.95 0.005 90);
-  --muted-foreground: oklch(0.45 0.012 255);
-  --accent: oklch(0.62 0.1 75);
+  --secondary: oklch(0.94 0.006 90);
+  --secondary-foreground: oklch(0.18 0.012 250);
+  --muted: oklch(0.93 0.006 90);
+  --muted-foreground: oklch(0.34 0.014 255);    /* ≥ 7:1 on background */
+  --accent: oklch(0.42 0.08 70);
   --accent-foreground: oklch(0.99 0 0);
-  --gold: oklch(0.62 0.1 75);
-  --gold-soft: oklch(0.74 0.09 78);
-  --border: oklch(0.18 0.012 250 / 0.12);
-  --input: oklch(0.18 0.012 250 / 0.12);
-  --ring: oklch(0.62 0.1 75);
+  --gold: oklch(0.52 0.1 72);
+  --gold-soft: oklch(0.46 0.1 72);
+  --border: oklch(0.18 0.012 250 / 0.22);       /* visible dividers */
+  --input: oklch(0.18 0.012 250 / 0.28);
+  --ring: oklch(0.42 0.08 70);
 
-  --gradient-gold: linear-gradient(135deg, oklch(0.74 0.09 78), oklch(0.58 0.11 72));
-  --gradient-hero: linear-gradient(180deg, oklch(0.99 0.003 90 / 0.1) 0%, oklch(0.99 0.003 90 / 0.85) 70%, oklch(0.99 0.003 90) 100%);
-  --gradient-radial-glow: radial-gradient(ellipse at top, oklch(0.62 0.1 75 / 0.1), transparent 60%);
-  --shadow-glow: 0 0 50px -10px oklch(0.62 0.1 75 / 0.3);
-  --shadow-luxury: 0 30px 80px -20px oklch(0.18 0.012 250 / 0.2);
-  --shadow-card: 0 10px 30px -10px oklch(0.18 0.012 250 / 0.12);
-  --glass-bg: oklch(1 0 0 / 0.6);
-  --glass-border: oklch(0.18 0.012 250 / 0.08);
+  --gradient-gold: linear-gradient(135deg, oklch(0.52 0.1 72), oklch(0.4 0.09 68));
+  --gradient-hero: linear-gradient(180deg, oklch(0.985 0.004 90 / 0.1) 0%, oklch(0.985 0.004 90 / 0.88) 70%, oklch(0.985 0.004 90) 100%);
+  --gradient-radial-glow: radial-gradient(ellipse at top, oklch(0.52 0.1 72 / 0.08), transparent 60%);
+  --shadow-glow: 0 0 40px -10px oklch(0.42 0.08 70 / 0.35);
+  --shadow-luxury: 0 30px 80px -20px oklch(0.18 0.012 250 / 0.25);
+  --shadow-card: 0 10px 30px -10px oklch(0.18 0.012 250 / 0.18);
+  --glass-bg: oklch(1 0 0 / 0.82);
+  --glass-border: oklch(0.18 0.012 250 / 0.14);
+}
+
+/* Light-mode contrast overrides for gradient gold buttons/badges:
+   the gold gradient is mid-tone, so white text fails AA. Force dark text. */
+.light .bg-gradient-gold,
+.light [class*="bg-gradient-gold"] {
+  color: oklch(0.16 0.012 250);
+}
+/* But keep gold-gradient TEXT (text-gradient-gold) using gradient fill */
+.light .text-gradient-gold {
+  color: transparent;
+}
+
+/* Improve dark-mode muted text slightly for AAA on cards */
+.dark {
+  --muted-foreground: oklch(0.82 0.012 255);
+  --border: oklch(1 0 0 / 0.12);
 }
 
 .light body {
