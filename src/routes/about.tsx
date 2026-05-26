@@ -89,7 +89,10 @@ const team = [
   },
 ];
 
+import { useT } from "@/i18n/I18nProvider";
+
 function AboutPage() {
+  const t = useT();
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
@@ -107,18 +110,16 @@ function AboutPage() {
           <div className="absolute inset-0 -z-10 bg-gradient-to-b from-background/70 via-background/85 to-background" />
           <div className="mx-auto max-w-4xl px-6 text-center">
             <span className="text-xs uppercase tracking-[0.4em] text-primary">
-              About VC Estates
+              {t("About VC Estates")}
             </span>
             <h1 className="mt-6 font-display text-5xl font-light leading-tight md:text-7xl">
-              A private agency for
+              {t("A private agency for")}
               <span className="block text-gradient-gold italic">
-                signature addresses.
+                {t("signature addresses.")}
               </span>
             </h1>
             <p className="mx-auto mt-8 max-w-2xl text-base text-muted-foreground md:text-lg">
-              VC Estates is a boutique real estate house. We curate a small,
-              private portfolio of Colombia's most refined homes for clients
-              who value architecture, privacy and a relationship that lasts.
+              {t("VC Estates is a boutique real estate house. We curate a small, private portfolio of Colombia's most refined homes for clients who value architecture, privacy and a relationship that lasts.")}
             </p>
           </div>
         </section>
@@ -146,11 +147,11 @@ function AboutPage() {
 
             <div>
               <span className="text-xs uppercase tracking-[0.4em] text-primary">
-                Our Story
+                {t("Our Story")}
               </span>
               <h2 className="mt-4 font-display text-4xl font-light leading-tight md:text-5xl">
-                Built on trust, refined by{" "}
-                <span className="text-gradient-gold">time</span>.
+                {t("Built on trust, refined by")}{" "}
+                <span className="text-gradient-gold">{t("time")}</span>.
               </h2>
               <div className="mt-8 space-y-5 text-muted-foreground">
                 <p>
@@ -191,7 +192,7 @@ function AboutPage() {
                   {s.value}
                 </p>
                 <p className="mt-2 text-xs uppercase tracking-[0.25em] text-muted-foreground">
-                  {s.label}
+                  {t(s.label)}
                 </p>
               </div>
             ))}
@@ -202,10 +203,10 @@ function AboutPage() {
         <section className="mx-auto max-w-7xl px-6 py-24">
           <div className="mx-auto max-w-2xl text-center">
             <span className="text-xs uppercase tracking-[0.4em] text-primary">
-              Our Values
+              {t("Our Values")}
             </span>
             <h2 className="mt-4 font-display text-4xl font-light md:text-5xl">
-              What we stand for.
+              {t("What we stand for.")}
             </h2>
           </div>
           <div className="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
