@@ -4,6 +4,7 @@ import { Footer } from "@/components/Footer";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { PropertyFilters } from "@/components/PropertyFilters";
 import { PropertyGrid } from "@/components/PropertyGrid";
+import { useT } from "@/i18n/I18nProvider";
 
 export const Route = createFileRoute("/properties")({
   head: () => ({
@@ -26,6 +27,7 @@ export const Route = createFileRoute("/properties")({
 });
 
 function PropertiesPage() {
+  const t = useT();
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
@@ -33,14 +35,13 @@ function PropertiesPage() {
         <div className="mx-auto max-w-7xl px-6">
           <header className="mb-10">
             <span className="text-[11px] uppercase tracking-[0.3em] text-primary">
-              Our Collection
+              {t("Our Collection")}
             </span>
             <h1 className="mt-3 font-display text-4xl font-bold tracking-tight md:text-5xl">
-              Properties
+              {t("Properties")}
             </h1>
             <p className="mt-3 max-w-xl text-sm text-muted-foreground">
-              A curated selection of signature residences. Use the filters to
-              refine by location, type and price.
+              {t("A curated selection of signature residences. Use the filters to refine by location, type and price.")}
             </p>
           </header>
 

@@ -10,6 +10,7 @@ import {
 
 import appCss from "../styles.css?url";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { I18nProvider } from "@/i18n/I18nProvider";
 
 function NotFoundComponent() {
   return (
@@ -115,7 +116,9 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
-        <Outlet />
+        <I18nProvider>
+          <Outlet />
+        </I18nProvider>
       </ThemeProvider>
     </QueryClientProvider>
   );

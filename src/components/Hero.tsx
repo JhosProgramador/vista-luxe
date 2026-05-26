@@ -1,7 +1,9 @@
 import { Search, MapPin, Home, DollarSign } from "lucide-react";
 import heroImg from "@/assets/hero-mansion.jpg";
+import { useT } from "@/i18n/I18nProvider";
 
 export function Hero() {
+  const t = useT();
   return (
     <section className="relative min-h-screen w-full overflow-hidden">
       <img
@@ -23,7 +25,7 @@ export function Hero() {
       <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl flex-col justify-center px-6 pt-32 pb-20">
         <div className="max-w-3xl">
           <span className="reveal mb-6 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-1.5 text-[11px] uppercase tracking-[0.3em] text-gold-soft backdrop-blur">
-            <span className="h-1 w-1 rounded-full bg-gold-soft" /> Private Real Estate · Colombia
+            <span className="h-1 w-1 rounded-full bg-gold-soft" /> {t("Private Real Estate · Colombia")}
           </span>
 
           <h1 className="reveal reveal-delay-1 font-display text-5xl font-bold leading-[1.05] tracking-tight text-white md:text-7xl lg:text-[5.5rem]"
@@ -40,37 +42,35 @@ export function Hero() {
                 filter: "drop-shadow(0 2px 18px oklch(0.78 0.12 80 / 0.45))",
               }}
             >
-              premium
+              {t("premium")}
             </span>
             <br />
-            properties in Colombia
+            {t("properties in Colombia")}
           </h1>
 
           <p className="reveal reveal-delay-2 mt-6 max-w-xl text-base text-white/85 md:text-lg">
-            A curated portfolio of luxury homes, beachfront villas and elite
-            residences — handpicked for discerning buyers and international
-            investors.
+            {t("A curated portfolio of luxury homes, beachfront villas and elite residences — handpicked for discerning buyers and international investors.")}
           </p>
         </div>
 
         {/* Glass search — always-dark glass for contrast over the hero image */}
         <div className="glass-hero reveal reveal-delay-3 mt-12 max-w-5xl rounded-2xl p-3 shadow-luxury">
           <div className="grid grid-cols-1 gap-2 md:grid-cols-[1.2fr_1fr_1fr_auto]">
-            <SearchField icon={<MapPin className="h-4 w-4" />} label="Location" placeholder="Cartagena, Medellín..." />
-            <SearchField icon={<Home className="h-4 w-4" />} label="Property type" placeholder="Villa, Penthouse..." />
-            <SearchField icon={<DollarSign className="h-4 w-4" />} label="Price range" placeholder="$500K – $5M" />
+            <SearchField icon={<MapPin className="h-4 w-4" />} label={t("Location")} placeholder={t("Cartagena, Medellín...")} />
+            <SearchField icon={<Home className="h-4 w-4" />} label={t("Property type")} placeholder={t("Villa, Penthouse...")} />
+            <SearchField icon={<DollarSign className="h-4 w-4" />} label={t("Price range")} placeholder={t("$500K – $5M")} />
             <button className="group flex items-center justify-center gap-2 rounded-xl bg-gradient-gold px-7 py-4 text-sm font-medium tracking-widest text-primary-foreground shadow-glow transition-smooth hover:scale-[1.02]">
               <Search className="h-4 w-4" />
-              FIND NOW
+              {t("FIND NOW")}
             </button>
           </div>
         </div>
 
         {/* Stats */}
         <div className="reveal reveal-delay-4 mt-16 grid max-w-3xl grid-cols-3 gap-8 border-t border-white/15 pt-8">
-          <Stat value="240+" label="Curated listings" />
-          <Stat value="18" label="Years of expertise" />
-          <Stat value="$1.2B" label="In transactions" />
+          <Stat value="240+" label={t("Curated listings")} />
+          <Stat value="18" label={t("Years of expertise")} />
+          <Stat value="$1.2B" label={t("In transactions")} />
         </div>
       </div>
     </section>

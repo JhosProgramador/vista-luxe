@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { z } from "zod";
 import contactHero from "@/assets/contact-hero.jpg";
+import { useT } from "@/i18n/I18nProvider";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -78,6 +79,7 @@ const subjects = [
 ];
 
 function ContactPage() {
+  const t = useT();
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -122,17 +124,16 @@ function ContactPage() {
           <div className="absolute inset-0 -z-10 bg-gradient-to-b from-background/70 via-background/85 to-background" />
           <div className="mx-auto max-w-4xl px-6 text-center">
             <span className="text-xs uppercase tracking-[0.4em] text-primary">
-              Contact
+              {t("Contact")}
             </span>
             <h1 className="mt-6 font-display text-5xl font-light leading-tight md:text-7xl">
-              Let's start a
+              {t("Let's start a")}
               <span className="block text-gradient-gold italic">
-                private conversation.
+                {t("private conversation.")}
               </span>
             </h1>
             <p className="mx-auto mt-8 max-w-2xl text-base text-muted-foreground md:text-lg">
-              Tell us what you're looking for, and one of our senior advisors
-              will reach out personally — discreet, fast, and on your terms.
+              {t("Our private advisors are available for confidential consultations across Bogotá, Medellín and Cartagena.")}
             </p>
           </div>
         </section>
@@ -144,24 +145,23 @@ function ContactPage() {
             <div className="lg:col-span-3">
               <div className="glass rounded-3xl p-8 md:p-12">
                 <span className="text-xs uppercase tracking-[0.4em] text-primary">
-                  Send a Message
+                  {t("Send us a message")}
                 </span>
                 <h2 className="mt-3 font-display text-3xl font-light md:text-4xl">
-                  How can we help?
+                  {t("How can we help?")}
                 </h2>
 
                 {sent && (
                   <div className="mt-6 flex items-center gap-3 rounded-xl border border-primary/40 bg-primary/10 p-4 text-sm text-primary">
                     <CheckCircle2 className="h-5 w-5" />
-                    Thank you. Your message has been received — we'll be in
-                    touch within 24 hours.
+                    {t("Thank you. One of our advisors will contact you shortly.")}
                   </div>
                 )}
 
                 <form onSubmit={handleSubmit} className="mt-8 space-y-5">
                   <div className="grid gap-5 md:grid-cols-2">
                     <Field
-                      label="Full name"
+                      label={t("Full name")}
                       error={errors.name}
                       value={form.name}
                       onChange={(v) => setForm({ ...form, name: v })}
@@ -169,7 +169,7 @@ function ContactPage() {
                       placeholder="Jane Doe"
                     />
                     <Field
-                      label="Email"
+                      label={t("Email")}
                       type="email"
                       error={errors.email}
                       value={form.email}
@@ -181,7 +181,7 @@ function ContactPage() {
 
                   <div className="grid gap-5 md:grid-cols-2">
                     <Field
-                      label="Phone (optional)"
+                      label={t("Phone")}
                       error={errors.phone}
                       value={form.phone}
                       onChange={(v) => setForm({ ...form, phone: v })}
@@ -190,7 +190,7 @@ function ContactPage() {
                     />
                     <div>
                       <label className="text-xs uppercase tracking-[0.25em] text-muted-foreground">
-                        Subject
+                        {t("Subject")}
                       </label>
                       <select
                         value={form.subject}
@@ -199,10 +199,10 @@ function ContactPage() {
                         }
                         className="mt-2 w-full rounded-xl border border-border bg-background/40 px-4 py-3 text-sm outline-none transition-colors focus:border-primary"
                       >
-                        <option value="">Select a topic…</option>
+                        <option value="">{t("Select a topic…") }</option>
                         {subjects.map((s) => (
                           <option key={s} value={s}>
-                            {s}
+                            {t(s)}
                           </option>
                         ))}
                       </select>
@@ -216,7 +216,7 @@ function ContactPage() {
 
                   <div>
                     <label className="text-xs uppercase tracking-[0.25em] text-muted-foreground">
-                      Message
+                      {t("Message")}
                     </label>
                     <textarea
                       value={form.message}
@@ -225,7 +225,7 @@ function ContactPage() {
                       }
                       maxLength={1000}
                       rows={6}
-                      placeholder="Tell us about the property or service you're interested in…"
+                      placeholder={t("Tell us about the property or service you're interested in…")}
                       className="mt-2 w-full resize-none rounded-xl border border-border bg-background/40 px-4 py-3 text-sm outline-none transition-colors focus:border-primary"
                     />
                     <div className="mt-1 flex justify-between">
@@ -246,7 +246,7 @@ function ContactPage() {
                     type="submit"
                     className="group inline-flex items-center gap-2 rounded-full bg-gradient-gold px-7 py-3 text-xs font-medium uppercase tracking-[0.25em] text-primary-foreground shadow-glow transition-smooth hover:scale-[1.02]"
                   >
-                    Send Message
+                    {t("Send Message")}
                     <Send className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                   </button>
                 </form>
@@ -305,10 +305,10 @@ function ContactPage() {
           <div className="mx-auto max-w-7xl px-6 py-20">
             <div className="mx-auto max-w-2xl text-center">
               <span className="text-xs uppercase tracking-[0.4em] text-primary">
-                Our Offices
+                {t("Our Offices")}
               </span>
               <h2 className="mt-4 font-display text-4xl font-light md:text-5xl">
-                Visit us in person.
+                {t("Visit us in person.")}
               </h2>
             </div>
             <div className="mt-14 grid gap-6 md:grid-cols-3">
