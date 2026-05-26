@@ -48,6 +48,42 @@ export function PropertySidebar({
       </div>
 
       <div className="rounded-2xl border border-border bg-card p-6 shadow-card">
+        <div className="flex items-center gap-4">
+          <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-gradient-gold font-display text-lg font-bold text-primary-foreground">
+            VC
+          </div>
+          <div>
+            <p className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground">
+              Your Advisor
+            </p>
+            <h3 className="font-display text-base font-semibold text-foreground">
+              Valentina Castro
+            </h3>
+            <p className="text-xs text-muted-foreground">Senior Luxury Specialist</p>
+          </div>
+        </div>
+
+        <div className="mt-4 grid grid-cols-2 gap-2">
+          <a
+            href="https://wa.me/573200000000?text=Hola%2C%20me%20interesa%20esta%20propiedad"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center justify-center gap-1.5 rounded-lg bg-[#25D366] px-3 py-2.5 text-xs font-medium text-white transition-smooth hover:opacity-90"
+          >
+            <MessageCircle className="h-4 w-4" />
+            WhatsApp
+          </a>
+          <a
+            href="mailto:hello@vcestates.com"
+            className="flex items-center justify-center gap-1.5 rounded-lg border border-primary/50 px-3 py-2.5 text-xs font-medium text-primary transition-colors hover:bg-primary/10"
+          >
+            <Mail className="h-4 w-4" />
+            Email
+          </a>
+        </div>
+      </div>
+
+      <div className="rounded-2xl border border-border bg-card p-6 shadow-card">
         <h2 className="font-display text-lg font-semibold">Schedule a Tour</h2>
         <p className="mt-1 text-xs text-muted-foreground">
           Fill out the form and our advisor will contact you to schedule a
