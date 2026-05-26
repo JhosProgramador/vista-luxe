@@ -3,6 +3,7 @@ import { Link } from "@tanstack/react-router";
 import p1 from "@/assets/property-1.jpg";
 import p2 from "@/assets/property-2.jpg";
 import p3 from "@/assets/property-3.jpg";
+import { useT } from "@/i18n/I18nProvider";
 
 const properties = [
   {
@@ -41,20 +42,21 @@ const properties = [
 ];
 
 export function FeaturedProperties() {
+  const t = useT();
   return (
     <section className="relative mx-auto max-w-7xl px-6 py-28">
       <div className="mb-14 flex items-end justify-between gap-6">
         <div>
           <span className="text-[11px] uppercase tracking-[0.3em] text-primary">
-            Featured Properties
+            {t("Featured Properties")}
           </span>
           <h2 className="mt-3 max-w-xl font-display text-4xl font-bold tracking-tight text-foreground md:text-5xl">
-            Handpicked residences,<br />
-            <span className="text-gradient-gold">extraordinary spaces.</span>
+            {t("Handpicked residences,")}<br />
+            <span className="text-gradient-gold">{t("extraordinary spaces.")}</span>
           </h2>
         </div>
         <button className="hidden items-center gap-2 rounded-full border border-border px-5 py-2.5 text-xs tracking-widest text-muted-foreground transition-smooth hover:border-primary hover:text-primary md:inline-flex">
-          VIEW ALL
+          {t("VIEW ALL")}
           <ArrowUpRight className="h-4 w-4" />
         </button>
       </div>
@@ -94,8 +96,8 @@ export function FeaturedProperties() {
               </div>
 
               <div className="mt-5 flex items-center justify-between border-t border-border pt-4 text-xs text-muted-foreground">
-                <Spec icon={<Bed className="h-4 w-4" />} value={`${p.beds} Beds`} />
-                <Spec icon={<Bath className="h-4 w-4" />} value={`${p.baths} Baths`} />
+                <Spec icon={<Bed className="h-4 w-4" />} value={`${p.beds} ${t("Beds")}`} />
+                <Spec icon={<Bath className="h-4 w-4" />} value={`${p.baths} ${t("Baths")}`} />
                 <Spec icon={<Maximize className="h-4 w-4" />} value={p.size} />
               </div>
             </div>
