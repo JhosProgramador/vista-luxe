@@ -1,4 +1,5 @@
 import { Bed, Bath, Maximize, MapPin, ArrowUpRight } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 import p1 from "@/assets/property-1.jpg";
 import p2 from "@/assets/property-2.jpg";
 import p3 from "@/assets/property-3.jpg";
