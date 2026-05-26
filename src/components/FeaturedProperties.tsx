@@ -6,6 +6,7 @@ import p3 from "@/assets/property-3.jpg";
 
 const properties = [
   {
+    id: "1",
     img: p1,
     title: "Sky Penthouse · El Poblado",
     location: "Medellín, Colombia",
@@ -16,6 +17,7 @@ const properties = [
     size: "320 m²",
   },
   {
+    id: "2",
     img: p2,
     title: "Oceanfront Villa Bocagrande",
     location: "Cartagena, Colombia",
@@ -26,6 +28,7 @@ const properties = [
     size: "640 m²",
   },
   {
+    id: "3",
     img: p3,
     title: "Casa Moderna Chía",
     location: "Bogotá, Colombia",
