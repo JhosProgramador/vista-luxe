@@ -1,7 +1,9 @@
 import { Logo } from "./Logo";
 import { Instagram, Facebook, Linkedin } from "lucide-react";
+import { useT } from "@/i18n/I18nProvider";
 
 export function Footer() {
+  const t = useT();
   return (
     <footer className="border-t border-border">
       <div className="mx-auto max-w-7xl px-6 py-16">
@@ -9,8 +11,7 @@ export function Footer() {
           <div className="md:col-span-2">
             <Logo />
             <p className="mt-5 max-w-sm text-sm text-muted-foreground">
-              VC Estates — a private real estate agency curating premium
-              properties across Colombia for local and international clients.
+              {t("VC Estates — a private real estate agency curating premium properties across Colombia for local and international clients.")}
             </p>
             <div className="mt-6 flex gap-3">
               {[Instagram, Facebook, Linkedin].map((Icon, i) => (
@@ -24,12 +25,18 @@ export function Footer() {
               ))}
             </div>
           </div>
-          <FooterCol title="Explore" items={["Home", "Properties", "Premium", "About"]} />
-          <FooterCol title="Contact" items={["Bogotá, Colombia", "+57 320 000 0000", "hello@vcestates.co"]} />
+          <FooterCol
+            title={t("Explore")}
+            items={[t("Home"), t("Properties"), t("Premium"), t("About")]}
+          />
+          <FooterCol
+            title={t("Contact")}
+            items={["Bogotá, Colombia", "+57 320 000 0000", "hello@vcestates.co"]}
+          />
         </div>
         <div className="mt-14 flex flex-col items-center justify-between gap-3 border-t border-border pt-6 text-xs text-muted-foreground md:flex-row">
-          <p>© {new Date().getFullYear()} VC Estates. All rights reserved.</p>
-          <p className="tracking-widest">PRIVATE · LUXURY · TRUST</p>
+          <p>© {new Date().getFullYear()} VC Estates. {t("All rights reserved.")}</p>
+          <p className="tracking-widest">{t("PRIVATE · LUXURY · TRUST")}</p>
         </div>
       </div>
     </footer>
