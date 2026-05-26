@@ -218,8 +218,8 @@ function AboutPage() {
                 <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-gold">
                   <v.icon className="h-5 w-5 text-primary-foreground" />
                 </div>
-                <h3 className="mt-6 font-display text-xl">{v.title}</h3>
-                <p className="mt-3 text-sm text-muted-foreground">{v.text}</p>
+                <h3 className="mt-6 font-display text-xl">{t(v.title)}</h3>
+                <p className="mt-3 text-sm text-muted-foreground">{t(v.text)}</p>
               </div>
             ))}
           </div>
@@ -230,15 +230,14 @@ function AboutPage() {
           <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-end">
             <div>
               <span className="text-xs uppercase tracking-[0.4em] text-primary">
-                The Team
+                {t("The Team")}
               </span>
               <h2 className="mt-4 font-display text-4xl font-light md:text-5xl">
-                People behind the portfolio.
+                {t("People behind the portfolio.")}
               </h2>
             </div>
             <p className="max-w-md text-sm text-muted-foreground">
-              A small, senior team of advisors with deep market knowledge in
-              Colombia and a global network of clients and partners.
+              {t("A small, senior team of advisors with deep market knowledge in Colombia and a global network of clients and partners.")}
             </p>
           </div>
 
