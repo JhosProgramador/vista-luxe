@@ -1,35 +1,37 @@
 import { useState } from "react";
 import { SlidersHorizontal } from "lucide-react";
+import { useT } from "@/i18n/I18nProvider";
 
-const locations = ["All Locations", "Medellín", "Bogotá", "Cartagena", "Santa Marta", "Miami"];
-const types = ["Any Type", "House", "Apartment", "Penthouse", "Villa", "Land"];
+const locationKeys = ["All Locations", "Medellín", "Bogotá", "Cartagena", "Santa Marta", "Miami"];
+const typeKeys = ["Any Type", "House", "Apartment", "Penthouse", "Villa", "Land"];
 const bedOptions = ["Any", "1+", "2+", "3+", "4+", "5+"];
 const bathOptions = ["Any", "1+", "2+", "3+", "4+"];
 
 export function PropertyFilters() {
+  const t = useT();
   const [price, setPrice] = useState<[number, number]>([240, 2600]);
 
   return (
     <div className="rounded-2xl border border-border bg-card/60 p-6 shadow-card backdrop-blur">
       <div className="mb-5 flex items-center justify-between">
-        <h2 className="font-display text-lg font-semibold">Filters</h2>
+        <h2 className="font-display text-lg font-semibold">{t("Filters")}</h2>
         <button
           onClick={() => setPrice([240, 2600])}
           className="text-xs uppercase tracking-widest text-primary transition-colors hover:text-gold-soft"
         >
-          Clear All
+          {t("Clear All")}
         </button>
       </div>
 
-      <Field label="Location">
-        <Select options={locations} />
+      <Field label={t("Location")}>
+        <Select options={locationKeys.map(t)} />
       </Field>
 
-      <Field label="Property Type">
-        <Select options={types} />
+      <Field label={t("Property Type")}>
+        <Select options={typeKeys.map(t)} />
       </Field>
 
-      <Field label="Price Range">
+      <Field label={t("Price Range")}>
         <div className="text-sm text-foreground">
           ${price[0]}k <span className="text-muted-foreground">—</span> ${price[1]}k
         </div>
@@ -59,25 +61,25 @@ export function PropertyFilters() {
         </div>
       </Field>
 
-      <Field label="Bedrooms">
-        <Select options={bedOptions} />
+      <Field label={t("Bedrooms")}>
+        <Select options={bedOptions.map(t)} />
       </Field>
 
-      <Field label="Bathrooms">
-        <Select options={bathOptions} />
+      <Field label={t("Bathrooms")}>
+        <Select options={bathOptions.map(t)} />
       </Field>
 
       <div className="mb-6">
         <label className="mb-2 block text-xs uppercase tracking-wider text-muted-foreground">
-          Property Status
+          {t("Property Status")}
         </label>
-        <Checkbox label="For Sale (120)" defaultChecked />
-        <Checkbox label="For Rent (45)" />
-        <Checkbox label="Premium (28)" />
+        <Checkbox label={t("For Sale (120)")} defaultChecked />
+        <Checkbox label={t("For Rent (45)")} />
+        <Checkbox label={t("Premium (28)")} />
       </div>
 
       <button className="flex w-full items-center justify-center gap-2 rounded-full bg-gradient-gold px-5 py-3 text-xs font-medium tracking-widest text-primary-foreground shadow-glow transition-smooth hover:scale-[1.02]">
-        APPLY FILTERS
+        {t("APPLY FILTERS")}
         <SlidersHorizontal className="h-3.5 w-3.5" />
       </button>
     </div>
