@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { MapPin, Bed, Bath, Maximize, Phone } from "lucide-react";
+import { MapPin, Bed, Bath, Maximize, Phone, MessageCircle, Mail } from "lucide-react";
 
 type Props = {
   title: string;
