@@ -1,10 +1,12 @@
 import { Bed, Bath, Maximize, MapPin, ArrowUpRight } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 import p1 from "@/assets/property-1.jpg";
 import p2 from "@/assets/property-2.jpg";
 import p3 from "@/assets/property-3.jpg";
 
 const properties = [
   {
+    id: "1",
     img: p1,
     title: "Sky Penthouse · El Poblado",
     location: "Medellín, Colombia",
@@ -15,6 +17,7 @@ const properties = [
     size: "320 m²",
   },
   {
+    id: "2",
     img: p2,
     title: "Oceanfront Villa Bocagrande",
     location: "Cartagena, Colombia",
@@ -25,6 +28,7 @@ const properties = [
     size: "640 m²",
   },
   {
+    id: "3",
     img: p3,
     title: "Casa Moderna Chía",
     location: "Bogotá, Colombia",
@@ -57,9 +61,11 @@ export function FeaturedProperties() {
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {properties.map((p) => (
-          <article
+          <Link
             key={p.title}
-            className="hover-lift group overflow-hidden rounded-2xl border border-border bg-card shadow-card"
+            to="/properties/$id"
+            params={{ id: p.id }}
+            className="hover-lift group block overflow-hidden rounded-2xl border border-border bg-card shadow-card"
           >
             <div className="relative h-72 overflow-hidden">
               <img
@@ -93,7 +99,7 @@ export function FeaturedProperties() {
                 <Spec icon={<Maximize className="h-4 w-4" />} value={p.size} />
               </div>
             </div>
-          </article>
+          </Link>
         ))}
       </div>
     </section>
