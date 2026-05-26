@@ -99,7 +99,7 @@ export function FeaturedProperties() {
                 <Spec icon={<Maximize className="h-4 w-4" />} value={p.size} />
               </div>
             </div>
-          </article>
+          </Link>
         ))}
       </div>
     </section>
