@@ -61,9 +61,11 @@ export function FeaturedProperties() {
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {properties.map((p) => (
-          <article
+          <Link
             key={p.title}
-            className="hover-lift group overflow-hidden rounded-2xl border border-border bg-card shadow-card"
+            to="/properties/$id"
+            params={{ id: p.id }}
+            className="hover-lift group block overflow-hidden rounded-2xl border border-border bg-card shadow-card"
           >
             <div className="relative h-72 overflow-hidden">
               <img
