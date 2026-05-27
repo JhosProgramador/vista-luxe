@@ -1,40 +1,21 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { AdminHeader } from "@/components/admin/AdminHeader";
-import { Plus, Pencil, Trash2, X, Upload, Search } from "lucide-react";
+import { Plus, Pencil, Trash2, X, Upload, Search, ImageIcon } from "lucide-react";
+import { useData, type Property, type PropertyStatus, type PropertyType } from "@/store/dataStore";
 
 export const Route = createFileRoute("/admin/properties")({
   component: AdminProperties,
 });
 
-type Property = {
-  id: string;
-  title: string;
-  location: string;
-  price: string;
-  status: "Published" | "Draft" | "Premium";
-  type: "Sale" | "Rent";
-  beds: number;
-  baths: number;
-  size: string;
-};
-
-const initial: Property[] = [
-  { id: "P-2401", title: "Modern Villa El Poblado", location: "Medellín", price: "$2,450,000", status: "Published", type: "Sale", beds: 4, baths: 3, size: "3200 sqft" },
-  { id: "P-2402", title: "Oceanfront Villa", location: "Cartagena", price: "$3,250,000", status: "Premium", type: "Sale", beds: 5, baths: 4, size: "4500 sqft" },
-  { id: "P-2403", title: "Sky Penthouse", location: "Medellín", price: "$2,150,000", status: "Draft", type: "Rent", beds: 4, baths: 3, size: "2400 sqft" },
-  { id: "P-2404", title: "Mountain Retreat", location: "Llanogrande", price: "$1,950,000", status: "Published", type: "Sale", beds: 3, baths: 2, size: "1600 sqft" },
-  { id: "P-2405", title: "Beachfront Villa", location: "Bocagrande", price: "$4,250,000", status: "Premium", type: "Sale", beds: 4, baths: 5, size: "3100 sqft" },
-];
-
 function AdminProperties() {
-  const [items, setItems] = useState<Property[]>(initial);
+  const { properties, addProperty, updateProperty, removeProperty } = useData();
   const [query, setQuery] = useState("");
-  const [filter, setFilter] = useState<"all" | Property["status"]>("all");
+  const [filter, setFilter] = useState<"all" | PropertyStatus>("all");
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState<Property | null>(null);
 
-  const filtered = items.filter(
+  const filtered = properties.filter(
     (p) =>
       (filter === "all" || p.status === filter) &&
       (p.title.toLowerCase().includes(query.toLowerCase()) ||
@@ -49,23 +30,19 @@ function AdminProperties() {
     setEditing(p);
     setOpen(true);
   };
-  const remove = (id: string) => setItems((xs) => xs.filter((x) => x.id !== id));
 
-  const save = (data: Omit<Property, "id">) => {
+  const save = (data: Omit<Property, "id" | "createdAt" | "views">) => {
     if (editing) {
-      setItems((xs) => xs.map((x) => (x.id === editing.id ? { ...editing, ...data } : x)));
+      updateProperty(editing.id, data);
     } else {
-      setItems((xs) => [
-        { ...data, id: `P-${2400 + xs.length + 10}` },
-        ...xs,
-      ]);
+      addProperty(data);
     }
     setOpen(false);
   };
 
   return (
     <div className="flex flex-col gap-8">
-      <AdminHeader title="Properties" subtitle={`${items.length} listings in inventory`} />
+      <AdminHeader title="Properties" subtitle={`${properties.length} listings in inventory`} />
 
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex flex-wrap items-center gap-3">
@@ -107,7 +84,7 @@ function AdminProperties() {
         <table className="w-full text-sm">
           <thead className="border-b border-border text-xs uppercase tracking-widest text-muted-foreground">
             <tr>
-              <th className="py-4 pl-6 text-left font-normal">ID</th>
+              <th className="py-4 pl-6 text-left font-normal">Image</th>
               <th className="py-4 text-left font-normal">Property</th>
               <th className="py-4 text-left font-normal">Location</th>
               <th className="py-4 text-left font-normal">Type</th>
@@ -119,7 +96,17 @@ function AdminProperties() {
           <tbody>
             {filtered.map((p) => (
               <tr key={p.id} className="border-b border-border/60 last:border-0 hover:bg-muted/40">
-                <td className="py-4 pl-6 font-mono text-xs text-muted-foreground">{p.id}</td>
+                <td className="py-3 pl-6">
+                  <div className="h-12 w-16 overflow-hidden rounded-md border border-border bg-muted">
+                    {p.images[0] ? (
+                      <img src={p.images[0]} alt={p.title} className="h-full w-full object-cover" />
+                    ) : (
+                      <div className="flex h-full w-full items-center justify-center text-muted-foreground">
+                        <ImageIcon className="h-4 w-4" />
+                      </div>
+                    )}
+                  </div>
+                </td>
                 <td className="py-4">
                   <div className="font-medium">{p.title}</div>
                   <div className="text-xs text-muted-foreground">
@@ -139,7 +126,9 @@ function AdminProperties() {
                       <Pencil className="h-3.5 w-3.5" />
                     </button>
                     <button
-                      onClick={() => remove(p.id)}
+                      onClick={() => {
+                        if (confirm(`Delete "${p.title}"?`)) removeProperty(p.id);
+                      }}
                       className="flex h-8 w-8 items-center justify-center rounded-md border border-border text-muted-foreground hover:border-destructive hover:text-destructive"
                     >
                       <Trash2 className="h-3.5 w-3.5" />
@@ -184,6 +173,8 @@ function StatusPill({ status }: { status: string }) {
   );
 }
 
+type DraftProperty = Omit<Property, "id" | "createdAt" | "views">;
+
 function PropertyDialog({
   initial,
   onClose,
@@ -191,25 +182,62 @@ function PropertyDialog({
 }: {
   initial: Property | null;
   onClose: () => void;
-  onSave: (p: Omit<Property, "id">) => void;
+  onSave: (p: DraftProperty) => void;
 }) {
-  const [form, setForm] = useState<Omit<Property, "id">>(
-    initial ?? {
-      title: "",
-      location: "",
-      price: "",
-      status: "Draft",
-      type: "Sale",
-      beds: 3,
-      baths: 2,
-      size: "",
-    }
+  const [form, setForm] = useState<DraftProperty>(
+    initial
+      ? {
+          title: initial.title,
+          location: initial.location,
+          price: initial.price,
+          status: initial.status,
+          type: initial.type,
+          beds: initial.beds,
+          baths: initial.baths,
+          size: initial.size,
+          description: initial.description ?? "",
+          images: initial.images,
+          featured: initial.featured ?? false,
+        }
+      : {
+          title: "",
+          location: "",
+          price: "",
+          status: "Draft",
+          type: "Sale",
+          beds: 3,
+          baths: 2,
+          size: "",
+          description: "",
+          images: [],
+          featured: false,
+        }
   );
+
+  const fileRef = useRef<HTMLInputElement>(null);
+
+  const handleFiles = async (files: FileList | null) => {
+    if (!files) return;
+    const readers = Array.from(files).map(
+      (file) =>
+        new Promise<string>((resolve, reject) => {
+          const r = new FileReader();
+          r.onload = () => resolve(r.result as string);
+          r.onerror = reject;
+          r.readAsDataURL(file);
+        })
+    );
+    const dataUrls = await Promise.all(readers);
+    setForm((f) => ({ ...f, images: [...f.images, ...dataUrls] }));
+  };
+
+  const removeImage = (idx: number) =>
+    setForm((f) => ({ ...f, images: f.images.filter((_, i) => i !== idx) }));
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 p-4 backdrop-blur">
-      <div className="w-full max-w-2xl overflow-hidden rounded-2xl border border-border bg-card shadow-luxury">
-        <div className="flex items-center justify-between border-b border-border px-6 py-4">
+      <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-border bg-card shadow-luxury">
+        <div className="sticky top-0 flex items-center justify-between border-b border-border bg-card px-6 py-4">
           <h3 className="font-display text-lg font-semibold">
             {initial ? "Edit Property" : "New Property"}
           </h3>
@@ -253,7 +281,7 @@ function PropertyDialog({
           <Field label="Type">
             <select
               value={form.type}
-              onChange={(e) => setForm({ ...form, type: e.target.value as Property["type"] })}
+              onChange={(e) => setForm({ ...form, type: e.target.value as PropertyType })}
               className="input"
             >
               <option>Sale</option>
@@ -263,7 +291,7 @@ function PropertyDialog({
           <Field label="Status">
             <select
               value={form.status}
-              onChange={(e) => setForm({ ...form, status: e.target.value as Property["status"] })}
+              onChange={(e) => setForm({ ...form, status: e.target.value as PropertyStatus })}
               className="input"
             >
               <option>Draft</option>
@@ -297,14 +325,60 @@ function PropertyDialog({
               className="input"
             />
           </Field>
+          <Field label="Description" className="sm:col-span-2">
+            <textarea
+              rows={3}
+              value={form.description ?? ""}
+              onChange={(e) => setForm({ ...form, description: e.target.value })}
+              className="input"
+            />
+          </Field>
+
+          <div className="sm:col-span-2">
+            <label className="flex cursor-pointer items-center gap-2 text-xs uppercase tracking-widest text-muted-foreground">
+              <input
+                type="checkbox"
+                checked={!!form.featured}
+                onChange={(e) => setForm({ ...form, featured: e.target.checked })}
+              />
+              Show on Home (Featured)
+            </label>
+          </div>
 
           <div className="sm:col-span-2">
             <label className="mb-1.5 block text-xs uppercase tracking-widest text-muted-foreground">
               Images
             </label>
-            <div className="flex h-32 cursor-pointer items-center justify-center rounded-xl border border-dashed border-border text-sm text-muted-foreground hover:border-primary hover:text-primary">
+            <input
+              ref={fileRef}
+              type="file"
+              accept="image/*"
+              multiple
+              className="hidden"
+              onChange={(e) => handleFiles(e.target.files)}
+            />
+            <div
+              onClick={() => fileRef.current?.click()}
+              className="flex h-28 cursor-pointer items-center justify-center rounded-xl border border-dashed border-border text-sm text-muted-foreground hover:border-primary hover:text-primary"
+            >
               <Upload className="mr-2 h-4 w-4" /> Drop or click to upload
             </div>
+            {form.images.length > 0 && (
+              <div className="mt-3 grid grid-cols-4 gap-2">
+                {form.images.map((src, i) => (
+                  <div key={i} className="group relative h-20 overflow-hidden rounded-md border border-border">
+                    <img src={src} alt="" className="h-full w-full object-cover" />
+                    <button
+                      type="button"
+                      onClick={() => removeImage(i)}
+                      className="absolute right-1 top-1 hidden h-5 w-5 items-center justify-center rounded-full bg-background/80 text-foreground group-hover:flex"
+                    >
+                      <X className="h-3 w-3" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
 
           <div className="mt-2 flex justify-end gap-3 sm:col-span-2">
