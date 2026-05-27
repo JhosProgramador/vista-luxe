@@ -1,7 +1,9 @@
 import { useState } from "react";
-import { MapPin, Bed, Bath, Maximize, Phone, MessageCircle, Mail } from "lucide-react";
+import { MapPin, Bed, Bath, Maximize, Phone, MessageCircle, Mail, CheckCircle2 } from "lucide-react";
+import { useData } from "@/store/dataStore";
 
 type Props = {
+  propertyId?: string;
   title: string;
   location: string;
   price: string;
@@ -12,6 +14,7 @@ type Props = {
 };
 
 export function PropertySidebar({
+  propertyId,
   title,
   location,
   price,
@@ -20,7 +23,9 @@ export function PropertySidebar({
   baths,
   size,
 }: Props) {
+  const { addLead, addMessage } = useData();
   const [form, setForm] = useState({ name: "", email: "", phone: "" });
+  const [sent, setSent] = useState(false);
 
   return (
     <aside className="space-y-6 lg:sticky lg:top-28 lg:self-start">
