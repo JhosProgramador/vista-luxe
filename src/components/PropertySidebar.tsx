@@ -99,6 +99,23 @@ export function PropertySidebar({
           className="mt-4 space-y-3"
           onSubmit={(e) => {
             e.preventDefault();
+            if (!form.name || !form.email) return;
+            addLead({
+              name: form.name,
+              email: form.email,
+              phone: form.phone,
+              property: title,
+              message: `Tour request for ${title}`,
+            });
+            addMessage({
+              from: form.name,
+              email: form.email,
+              subject: `Tour request — ${title}`,
+              text: `${form.name} requested a private tour for ${title}. Phone: ${form.phone || "—"}`,
+            });
+            setForm({ name: "", email: "", phone: "" });
+            setSent(true);
+            setTimeout(() => setSent(false), 4000);
           }}
         >
           <Input
@@ -124,6 +141,12 @@ export function PropertySidebar({
           >
             Request Tour
           </button>
+          {sent && (
+            <p className="flex items-center justify-center gap-2 text-xs text-primary">
+              <CheckCircle2 className="h-4 w-4" /> Request sent. We'll be in touch shortly.
+            </p>
+          )}
+          {propertyId && <input type="hidden" value={propertyId} />}
         </form>
 
         <div className="mt-5 border-t border-border pt-4">
