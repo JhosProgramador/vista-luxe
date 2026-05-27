@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { ChevronRight } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
@@ -6,45 +6,42 @@ import { WhatsAppButton } from "@/components/WhatsAppButton";
 import { PropertyGallery } from "@/components/PropertyGallery";
 import { PropertyTabs } from "@/components/PropertyTabs";
 import { PropertySidebar } from "@/components/PropertySidebar";
-import hero from "@/assets/detail-hero.jpg";
-import d1 from "@/assets/detail-1.jpg";
-import d2 from "@/assets/detail-2.jpg";
-import d3 from "@/assets/detail-3.jpg";
-import d4 from "@/assets/detail-4.jpg";
+import { useData } from "@/store/dataStore";
 
 export const Route = createFileRoute("/properties/$id")({
   head: ({ params }) => ({
     meta: [
-      { title: `Modern Villa in El Poblado — VC Estates` },
+      { title: `Property ${params.id} — VC Estates` },
       {
         name: "description",
         content:
-          "A signature modern villa with infinity pool, private garden and curated interiors. Schedule a private tour.",
+          "A signature residence curated by VC Estates. Schedule a private tour.",
       },
-      { property: "og:title", content: "Modern Villa in El Poblado — VC Estates" },
-      {
-        property: "og:description",
-        content: "Luxury villa for sale — schedule a private tour.",
-      },
+      { property: "og:title", content: "VC Estates — Luxury Residence" },
       { property: "og:url", content: `/properties/${params.id}` },
     ],
     links: [{ rel: "canonical", href: `/properties/${params.id}` }],
   }),
   component: PropertyDetailPage,
+  notFoundComponent: NotFoundProperty,
 });
 
-const property = {
-  title: "Modern Villa in El Poblado",
-  location: "Medellín, CO",
-  price: "$2,450,000",
-  status: "For Sale",
-  beds: 4,
-  baths: 3,
-  size: "3,200 sqft",
-  images: [hero, d1, d2, d3, d4],
-};
-
 function PropertyDetailPage() {
+  const { id } = Route.useParams();
+  const { getProperty } = useData();
+  const property = getProperty(id);
+
+  if (!property) {
+    throw notFound();
+  }
+
+  const statusLabel =
+    property.status === "Premium"
+      ? "Premium"
+      : property.type === "Rent"
+      ? "For Rent"
+      : "For Sale";
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <Navbar />
@@ -54,15 +51,47 @@ function PropertyDetailPage() {
 
           <div className="mt-6 grid grid-cols-1 gap-8 lg:grid-cols-[1fr_380px]">
             <div>
-              <PropertyGallery images={property.images} status={property.status} />
+              <PropertyGallery images={property.images} status={statusLabel} />
               <PropertyTabs />
             </div>
-            <PropertySidebar {...property} />
+            <PropertySidebar
+              propertyId={property.id}
+              title={property.title}
+              location={property.location}
+              price={property.price}
+              status={statusLabel}
+              beds={property.beds}
+              baths={property.baths}
+              size={property.size}
+            />
           </div>
         </div>
       </main>
       <Footer />
       <WhatsAppButton />
+    </div>
+  );
+}
+
+function NotFoundProperty() {
+  return (
+    <div className="min-h-screen bg-background text-foreground">
+      <Navbar />
+      <main className="flex min-h-[60vh] items-center justify-center px-6 pt-28 text-center">
+        <div>
+          <h1 className="font-display text-3xl font-bold">Property not found</h1>
+          <p className="mt-2 text-sm text-muted-foreground">
+            This listing may have been removed or is no longer available.
+          </p>
+          <Link
+            to="/properties"
+            className="mt-6 inline-flex rounded-full bg-gradient-gold px-5 py-2.5 text-xs uppercase tracking-widest text-primary-foreground shadow-glow"
+          >
+            View all properties
+          </Link>
+        </div>
+      </main>
+      <Footer />
     </div>
   );
 }
