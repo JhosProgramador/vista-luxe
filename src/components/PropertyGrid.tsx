@@ -1,44 +1,35 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Bed, Bath, Maximize, MapPin, Plus, LayoutGrid, List } from "lucide-react";
-import p1 from "@/assets/property-1.jpg";
-import p2 from "@/assets/property-2.jpg";
-import p3 from "@/assets/property-3.jpg";
+import { useData } from "@/store/dataStore";
 
-type Property = {
-  id: string;
-  img: string;
-  title: string;
-  location: string;
-  price: string;
-  status: "For Sale" | "For Rent" | "Premium";
-  beds: number;
-  baths: number;
-  size: string;
-};
+const sortOptions = ["Newest", "Price: Low to High", "Price: High to Low"];
 
-const properties: Property[] = [
-  { id: "1", img: p1, title: "Modern Villa in El Poblado", location: "Medellín, CO", price: "$2,450,000", status: "For Sale", beds: 4, baths: 3, size: "3200 sqft" },
-  { id: "2", img: p2, title: "Oceanfront Villa", location: "Cartagena, CO", price: "$3,250,000", status: "Premium", beds: 5, baths: 4, size: "4500 sqft" },
-  { id: "3", img: p3, title: "Luxury Apartment", location: "Bogotá, CO", price: "$1,650,000", status: "For Sale", beds: 3, baths: 2, size: "1800 sqft" },
-  { id: "4", img: p1, title: "Modern Townhouse", location: "Santa Marta, CO", price: "$1,250,000 /month", status: "For Rent", beds: 3, baths: 2, size: "1900 sqft" },
-  { id: "5", img: p2, title: "Beachfront Villa", location: "Bocagrande, CO", price: "$4,250,000", status: "Premium", beds: 4, baths: 5, size: "3100 sqft" },
-  { id: "6", img: p3, title: "Sky Penthouse", location: "Medellín, CO", price: "$2,150,000 /month", status: "For Rent", beds: 4, baths: 3, size: "2400 sqft" },
-  { id: "7", img: p1, title: "Ocean View House", location: "Santa Marta, CO", price: "$2,850,000", status: "For Sale", beds: 4, baths: 3, size: "2800 sqft" },
-  { id: "8", img: p2, title: "Mountain Retreat", location: "Llanogrande, CO", price: "$1,950,000", status: "For Sale", beds: 3, baths: 2, size: "1600 sqft" },
-];
-
-const sortOptions = ["Newest", "Price: Low to High", "Price: High to Low", "Most Popular"];
+function parsePrice(s: string) {
+  const n = parseFloat(s.replace(/[^0-9.]/g, ""));
+  return Number.isFinite(n) ? n : 0;
+}
 
 export function PropertyGrid() {
+  const { properties } = useData();
   const [view, setView] = useState<"grid" | "list">("grid");
+  const [sort, setSort] = useState(sortOptions[0]);
+
+  const visible = useMemo(() => {
+    const list = properties.filter((p) => p.status !== "Draft");
+    const sorted = [...list];
+    if (sort === "Price: Low to High") sorted.sort((a, b) => parsePrice(a.price) - parsePrice(b.price));
+    else if (sort === "Price: High to Low") sorted.sort((a, b) => parsePrice(b.price) - parsePrice(a.price));
+    else sorted.sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
+    return sorted;
+  }, [properties, sort]);
 
   return (
     <div>
       <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
         <p className="text-sm text-muted-foreground">
           <span className="font-display text-base font-semibold text-primary">
-            {properties.length}
+            {visible.length}
           </span>{" "}
           properties found
         </p>
@@ -47,7 +38,11 @@ export function PropertyGrid() {
           <span className="text-xs uppercase tracking-widest text-muted-foreground">
             Sort by
           </span>
-          <select className="rounded-lg border border-border bg-background/60 px-3 py-2 text-sm text-foreground outline-none focus:border-primary">
+          <select
+            value={sort}
+            onChange={(e) => setSort(e.target.value)}
+            className="rounded-lg border border-border bg-background/60 px-3 py-2 text-sm text-foreground outline-none focus:border-primary"
+          >
             {sortOptions.map((o) => (
               <option key={o}>{o}</option>
             ))}
@@ -86,21 +81,58 @@ export function PropertyGrid() {
             : "flex flex-col gap-5"
         }
       >
-        {properties.map((p) => (
-          <Card key={p.id} property={p} layout={view} />
+        {visible.map((p) => (
+          <Card
+            key={p.id}
+            id={p.id}
+            img={p.images[0]}
+            title={p.title}
+            location={p.location}
+            price={p.price}
+            status={p.status === "Premium" ? "Premium" : p.type === "Rent" ? "For Rent" : "For Sale"}
+            beds={p.beds}
+            baths={p.baths}
+            size={p.size}
+            layout={view}
+          />
         ))}
+        {visible.length === 0 && (
+          <div className="col-span-full rounded-2xl border border-dashed border-border py-16 text-center text-sm text-muted-foreground">
+            No properties available yet.
+          </div>
+        )}
       </div>
-
-      <Pagination />
     </div>
   );
 }
 
-function Card({ property: p, layout }: { property: Property; layout: "grid" | "list" }) {
+function Card({
+  id,
+  img,
+  title,
+  location,
+  price,
+  status,
+  beds,
+  baths,
+  size,
+  layout,
+}: {
+  id: string;
+  img?: string;
+  title: string;
+  location: string;
+  price: string;
+  status: string;
+  beds: number;
+  baths: number;
+  size: string;
+  layout: "grid" | "list";
+}) {
   const statusColor =
-    p.status === "Premium"
+    status === "Premium"
       ? "border-primary/50 text-primary"
-      : p.status === "For Rent"
+      : status === "For Rent"
       ? "border-gold-soft/40 text-gold-soft"
       : "border-border text-muted-foreground";
 
@@ -111,20 +143,22 @@ function Card({ property: p, layout }: { property: Property; layout: "grid" | "l
       }`}
     >
       <div
-        className={`relative overflow-hidden ${
+        className={`relative overflow-hidden bg-muted ${
           layout === "list" ? "h-60 md:h-auto md:w-72 md:shrink-0" : "h-60"
         }`}
       >
-        <img
-          src={p.img}
-          alt={p.title}
-          loading="lazy"
-          className="h-full w-full object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-110"
-        />
+        {img && (
+          <img
+            src={img}
+            alt={title}
+            loading="lazy"
+            className="h-full w-full object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-110"
+          />
+        )}
         <span
           className={`absolute left-3 top-3 rounded-md border bg-background/60 px-2.5 py-1 text-[10px] uppercase tracking-[0.2em] backdrop-blur ${statusColor}`}
         >
-          {p.status}
+          {status}
         </span>
         <button
           aria-label="Save"
@@ -137,23 +171,23 @@ function Card({ property: p, layout }: { property: Property; layout: "grid" | "l
       <div className="flex flex-1 flex-col p-5">
         <Link
           to="/properties/$id"
-          params={{ id: p.id }}
+          params={{ id }}
           className="font-display text-lg font-semibold text-foreground transition-colors hover:text-primary"
         >
-          {p.title}
+          {title}
         </Link>
         <div className="mt-1 flex items-center gap-1.5 text-xs text-muted-foreground">
           <MapPin className="h-3.5 w-3.5 text-primary" />
-          {p.location}
+          {location}
         </div>
         <div className="mt-3 font-display text-xl font-bold text-gradient-gold">
-          {p.price}
+          {price}
         </div>
 
         <div className="mt-auto flex items-center justify-between border-t border-border pt-3 text-xs text-muted-foreground">
-          <Spec icon={<Bed className="h-4 w-4" />} value={`${p.beds} Beds`} />
-          <Spec icon={<Bath className="h-4 w-4" />} value={`${p.baths} Baths`} />
-          <Spec icon={<Maximize className="h-4 w-4" />} value={p.size} />
+          <Spec icon={<Bed className="h-4 w-4" />} value={`${beds} Beds`} />
+          <Spec icon={<Bath className="h-4 w-4" />} value={`${baths} Baths`} />
+          <Spec icon={<Maximize className="h-4 w-4" />} value={size} />
         </div>
       </div>
     </article>
@@ -165,29 +199,6 @@ function Spec({ icon, value }: { icon: React.ReactNode; value: string }) {
     <div className="flex items-center gap-1.5">
       <span className="text-primary">{icon}</span>
       {value}
-    </div>
-  );
-}
-
-function Pagination() {
-  const pages = [1, 2, 3, 4, "...", 10];
-  return (
-    <div className="mt-12 flex items-center justify-center gap-2">
-      {pages.map((p, i) => (
-        <button
-          key={i}
-          className={`flex h-9 w-9 items-center justify-center rounded-md text-sm transition-colors ${
-            p === 1
-              ? "bg-gradient-gold text-primary-foreground shadow-glow"
-              : "border border-border text-muted-foreground hover:border-primary hover:text-primary"
-          }`}
-        >
-          {p}
-        </button>
-      ))}
-      <button className="flex h-9 w-9 items-center justify-center rounded-md border border-border text-muted-foreground hover:border-primary hover:text-primary">
-        ›
-      </button>
     </div>
   );
 }
