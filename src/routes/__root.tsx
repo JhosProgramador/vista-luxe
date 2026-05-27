@@ -11,6 +11,7 @@ import {
 import appCss from "../styles.css?url";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { I18nProvider } from "@/i18n/I18nProvider";
+import { DataProvider } from "@/store/dataStore";
 
 function NotFoundComponent() {
   return (
