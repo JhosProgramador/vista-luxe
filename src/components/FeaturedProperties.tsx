@@ -1,48 +1,15 @@
 import { Bed, Bath, Maximize, MapPin, ArrowUpRight } from "lucide-react";
 import { Link } from "@tanstack/react-router";
-import p1 from "@/assets/property-1.jpg";
-import p2 from "@/assets/property-2.jpg";
-import p3 from "@/assets/property-3.jpg";
 import { useT } from "@/i18n/I18nProvider";
-
-const properties = [
-  {
-    id: "1",
-    img: p1,
-    title: "Sky Penthouse · El Poblado",
-    location: "Medellín, Colombia",
-    price: "$1,250,000",
-    badge: "Premium",
-    beds: 3,
-    baths: 4,
-    size: "320 m²",
-  },
-  {
-    id: "2",
-    img: p2,
-    title: "Oceanfront Villa Bocagrande",
-    location: "Cartagena, Colombia",
-    price: "$2,890,000",
-    badge: "Luxury",
-    beds: 5,
-    baths: 6,
-    size: "640 m²",
-  },
-  {
-    id: "3",
-    img: p3,
-    title: "Casa Moderna Chía",
-    location: "Bogotá, Colombia",
-    price: "$680,000",
-    badge: "Standard",
-    beds: 4,
-    baths: 3,
-    size: "410 m²",
-  },
-];
+import { useData } from "@/store/dataStore";
 
 export function FeaturedProperties() {
   const t = useT();
+  const { properties } = useData();
+  const featured = properties
+    .filter((p) => p.featured && p.status !== "Draft")
+    .slice(0, 3);
+
   return (
     <section className="relative mx-auto max-w-7xl px-6 py-28">
       <div className="mb-14 flex items-end justify-between gap-6">
@@ -55,32 +22,35 @@ export function FeaturedProperties() {
             <span className="text-gradient-gold">{t("extraordinary spaces.")}</span>
           </h2>
         </div>
-        <button className="hidden items-center gap-2 rounded-full border border-border px-5 py-2.5 text-xs tracking-widest text-muted-foreground transition-smooth hover:border-primary hover:text-primary md:inline-flex">
+        <Link
+          to="/properties"
+          className="hidden items-center gap-2 rounded-full border border-border px-5 py-2.5 text-xs tracking-widest text-muted-foreground transition-smooth hover:border-primary hover:text-primary md:inline-flex"
+        >
           {t("VIEW ALL")}
           <ArrowUpRight className="h-4 w-4" />
-        </button>
+        </Link>
       </div>
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {properties.map((p) => (
+        {featured.map((p) => (
           <Link
-            key={p.title}
+            key={p.id}
             to="/properties/$id"
             params={{ id: p.id }}
             className="hover-lift group block overflow-hidden rounded-2xl border border-border bg-card shadow-card"
           >
-            <div className="relative h-72 overflow-hidden">
-              <img
-                src={p.img}
-                alt={p.title}
-                loading="lazy"
-                width={1024}
-                height={768}
-                className="h-full w-full object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-110"
-              />
+            <div className="relative h-72 overflow-hidden bg-muted">
+              {p.images[0] && (
+                <img
+                  src={p.images[0]}
+                  alt={p.title}
+                  loading="lazy"
+                  className="h-full w-full object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-110"
+                />
+              )}
               <div className="absolute inset-0 bg-gradient-to-t from-card via-card/30 to-transparent" />
               <span className="absolute left-4 top-4 rounded-full border border-primary/40 bg-background/40 px-3 py-1 text-[10px] uppercase tracking-[0.25em] text-primary backdrop-blur">
-                {p.badge}
+                {p.status}
               </span>
             </div>
             <div className="p-6">
@@ -103,6 +73,11 @@ export function FeaturedProperties() {
             </div>
           </Link>
         ))}
+        {featured.length === 0 && (
+          <div className="col-span-full rounded-2xl border border-dashed border-border py-16 text-center text-sm text-muted-foreground">
+            {t("No featured properties yet.")}
+          </div>
+        )}
       </div>
     </section>
   );

@@ -1,7 +1,9 @@
 import { useState } from "react";
-import { MapPin, Bed, Bath, Maximize, Phone, MessageCircle, Mail } from "lucide-react";
+import { MapPin, Bed, Bath, Maximize, Phone, MessageCircle, Mail, CheckCircle2 } from "lucide-react";
+import { useData } from "@/store/dataStore";
 
 type Props = {
+  propertyId?: string;
   title: string;
   location: string;
   price: string;
@@ -12,6 +14,7 @@ type Props = {
 };
 
 export function PropertySidebar({
+  propertyId,
   title,
   location,
   price,
@@ -20,7 +23,9 @@ export function PropertySidebar({
   baths,
   size,
 }: Props) {
+  const { addLead, addMessage } = useData();
   const [form, setForm] = useState({ name: "", email: "", phone: "" });
+  const [sent, setSent] = useState(false);
 
   return (
     <aside className="space-y-6 lg:sticky lg:top-28 lg:self-start">
@@ -94,6 +99,23 @@ export function PropertySidebar({
           className="mt-4 space-y-3"
           onSubmit={(e) => {
             e.preventDefault();
+            if (!form.name || !form.email) return;
+            addLead({
+              name: form.name,
+              email: form.email,
+              phone: form.phone,
+              property: title,
+              message: `Tour request for ${title}`,
+            });
+            addMessage({
+              from: form.name,
+              email: form.email,
+              subject: `Tour request — ${title}`,
+              text: `${form.name} requested a private tour for ${title}. Phone: ${form.phone || "—"}`,
+            });
+            setForm({ name: "", email: "", phone: "" });
+            setSent(true);
+            setTimeout(() => setSent(false), 4000);
           }}
         >
           <Input
@@ -119,6 +141,12 @@ export function PropertySidebar({
           >
             Request Tour
           </button>
+          {sent && (
+            <p className="flex items-center justify-center gap-2 text-xs text-primary">
+              <CheckCircle2 className="h-4 w-4" /> Request sent. We'll be in touch shortly.
+            </p>
+          )}
+          {propertyId && <input type="hidden" value={propertyId} />}
         </form>
 
         <div className="mt-5 border-t border-border pt-4">

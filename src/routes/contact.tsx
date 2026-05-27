@@ -18,6 +18,7 @@ import {
 import { z } from "zod";
 import contactHero from "@/assets/contact-hero.jpg";
 import { useT } from "@/i18n/I18nProvider";
+import { useData } from "@/store/dataStore";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -80,6 +81,7 @@ const subjects = [
 
 function ContactPage() {
   const t = useT();
+  const { addLead, addMessage } = useData();
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -102,6 +104,19 @@ function ContactPage() {
       return;
     }
     setErrors({});
+    addLead({
+      name: form.name,
+      email: form.email,
+      phone: form.phone,
+      property: form.subject || "General enquiry",
+      message: form.message,
+    });
+    addMessage({
+      from: form.name,
+      email: form.email,
+      subject: form.subject || "General enquiry",
+      text: form.message,
+    });
     setSent(true);
     setForm({ name: "", email: "", phone: "", subject: "", message: "" });
     setTimeout(() => setSent(false), 5000);
