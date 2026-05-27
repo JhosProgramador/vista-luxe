@@ -81,6 +81,7 @@ const subjects = [
 
 function ContactPage() {
   const t = useT();
+  const { addLead, addMessage } = useData();
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -103,6 +104,19 @@ function ContactPage() {
       return;
     }
     setErrors({});
+    addLead({
+      name: form.name,
+      email: form.email,
+      phone: form.phone,
+      property: form.subject || "General enquiry",
+      message: form.message,
+    });
+    addMessage({
+      from: form.name,
+      email: form.email,
+      subject: form.subject || "General enquiry",
+      text: form.message,
+    });
     setSent(true);
     setForm({ name: "", email: "", phone: "", subject: "", message: "" });
     setTimeout(() => setSent(false), 5000);
