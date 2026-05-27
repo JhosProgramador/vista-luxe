@@ -18,6 +18,7 @@ import {
 import { z } from "zod";
 import contactHero from "@/assets/contact-hero.jpg";
 import { useT } from "@/i18n/I18nProvider";
+import { useData } from "@/store/dataStore";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
