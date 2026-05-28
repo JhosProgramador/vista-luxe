@@ -13,7 +13,7 @@ const links = [
   { key: "Admin", to: "/admin" },
 ] as const;
 
-export function Navbar() {
+export function Navbar({ solid = false }: { solid?: boolean }) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const { lang, setLang, t } = useI18n();
@@ -25,11 +25,13 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const linkBase = scrolled
+  const compact = scrolled || solid;
+
+  const linkBase = compact
     ? "nav-link text-sm tracking-wide text-foreground/80 transition-colors hover:text-primary"
     : "nav-link text-sm tracking-wide text-white/85 transition-colors hover:text-white";
 
-  const iconBtn = scrolled
+  const iconBtn = compact
     ? "flex h-9 items-center gap-2 rounded-full border border-border px-3 py-1.5 text-xs tracking-widest text-foreground/80 transition-colors hover:border-primary hover:text-primary"
     : "flex h-9 items-center gap-2 rounded-full border border-white/25 px-3 py-1.5 text-xs tracking-widest text-white/85 transition-colors hover:border-white hover:text-white";
 
