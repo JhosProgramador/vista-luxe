@@ -40,7 +40,7 @@ export function Navbar({ solid = false }: { solid?: boolean }) {
   return (
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-smooth ${
-        scrolled ? "glass-strong py-3" : "py-5"
+        compact ? "glass-strong py-3" : "py-5"
       }`}
     >
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-6">
@@ -61,7 +61,7 @@ export function Navbar({ solid = false }: { solid?: boolean }) {
         <div className="hidden items-center gap-3 md:flex">
           <ThemeToggle
             className={
-              scrolled
+              compact
                 ? ""
                 : "border-white/25 text-white/85 hover:border-white hover:text-white"
             }
