@@ -84,7 +84,7 @@ export function Navbar({ solid = false }: { solid?: boolean }) {
         </div>
 
         <button
-          className={`md:hidden ${scrolled ? "text-foreground" : "text-white"}`}
+          className={`md:hidden ${compact ? "text-foreground" : "text-white"}`}
           onClick={() => setOpen(!open)}
           aria-label="Menu"
         >
