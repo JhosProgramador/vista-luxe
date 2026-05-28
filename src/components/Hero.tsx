@@ -13,14 +13,8 @@ export function Hero() {
         height={1280}
         className="absolute inset-0 h-full w-full object-cover"
       />
-      {/* Always-dark cinematic overlay (independent of theme) */}
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            "linear-gradient(180deg, oklch(0.12 0.012 250 / 0.35) 0%, oklch(0.12 0.012 250 / 0.78) 70%, var(--background) 100%)",
-        }}
-      />
+      {/* Theme-aware cinematic overlay: dark vignette in dark mode, light wash in light mode */}
+      <div className="hero-overlay absolute inset-0" />
 
       <div className="relative z-10 mx-auto flex min-h-screen max-w-7xl flex-col justify-center px-6 pt-32 pb-20">
         <div className="max-w-3xl">

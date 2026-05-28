@@ -30,7 +30,7 @@ function PropertiesPage() {
   const t = useT();
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <Navbar />
+      <Navbar solid />
       <main className="pt-28 pb-20">
         <div className="mx-auto max-w-7xl px-6">
           <header className="mb-10">
