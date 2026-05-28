@@ -181,6 +181,26 @@ html.light {
     border: 1px solid oklch(1 0 0 / 0.14);
   }
 
+  /* Theme-aware hero image overlay: deep cinematic in dark mode,
+     light airy wash in light mode (keeps hero text readable via shadow). */
+  .hero-overlay {
+    background:
+      linear-gradient(180deg,
+        oklch(0.12 0.012 250 / 0.35) 0%,
+        oklch(0.12 0.012 250 / 0.78) 70%,
+        var(--background) 100%);
+  }
+  .light .hero-overlay {
+    background:
+      linear-gradient(105deg,
+        oklch(0.16 0.012 250 / 0.55) 0%,
+        oklch(0.16 0.012 250 / 0.25) 45%,
+        oklch(0.16 0.012 250 / 0.05) 75%),
+      linear-gradient(180deg,
+        transparent 60%,
+        var(--background) 100%);
+  }
+
   .text-gradient-gold {
     background: var(--gradient-gold);
     -webkit-background-clip: text;

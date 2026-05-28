@@ -44,7 +44,7 @@ function PropertyDetailPage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <Navbar />
+      <Navbar solid />
       <main className="pt-28 pb-20">
         <div className="mx-auto max-w-7xl px-6">
           <Breadcrumb title={property.title} />
@@ -76,7 +76,7 @@ function PropertyDetailPage() {
 function NotFoundProperty() {
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <Navbar />
+      <Navbar solid />
       <main className="flex min-h-[60vh] items-center justify-center px-6 pt-28 text-center">
         <div>
           <h1 className="font-display text-3xl font-bold">Property not found</h1>

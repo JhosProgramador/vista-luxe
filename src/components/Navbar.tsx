@@ -13,7 +13,7 @@ const links = [
   { key: "Admin", to: "/admin" },
 ] as const;
 
-export function Navbar() {
+export function Navbar({ solid = false }: { solid?: boolean }) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const { lang, setLang, t } = useI18n();
@@ -25,11 +25,13 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const linkBase = scrolled
+  const compact = scrolled || solid;
+
+  const linkBase = compact
     ? "nav-link text-sm tracking-wide text-foreground/80 transition-colors hover:text-primary"
     : "nav-link text-sm tracking-wide text-white/85 transition-colors hover:text-white";
 
-  const iconBtn = scrolled
+  const iconBtn = compact
     ? "flex h-9 items-center gap-2 rounded-full border border-border px-3 py-1.5 text-xs tracking-widest text-foreground/80 transition-colors hover:border-primary hover:text-primary"
     : "flex h-9 items-center gap-2 rounded-full border border-white/25 px-3 py-1.5 text-xs tracking-widest text-white/85 transition-colors hover:border-white hover:text-white";
 
@@ -38,7 +40,7 @@ export function Navbar() {
   return (
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-smooth ${
-        scrolled ? "glass-strong py-3" : "py-5"
+        compact ? "glass-strong py-3" : "py-5"
       }`}
     >
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-6">
@@ -59,7 +61,7 @@ export function Navbar() {
         <div className="hidden items-center gap-3 md:flex">
           <ThemeToggle
             className={
-              scrolled
+              compact
                 ? ""
                 : "border-white/25 text-white/85 hover:border-white hover:text-white"
             }
@@ -82,7 +84,7 @@ export function Navbar() {
         </div>
 
         <button
-          className={`md:hidden ${scrolled ? "text-foreground" : "text-white"}`}
+          className={`md:hidden ${compact ? "text-foreground" : "text-white"}`}
           onClick={() => setOpen(!open)}
           aria-label="Menu"
         >

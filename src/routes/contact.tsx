@@ -124,7 +124,7 @@ function ContactPage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <Navbar />
+      <Navbar solid />
       <main>
         {/* Hero */}
         <section className="relative isolate overflow-hidden pt-40 pb-24">
